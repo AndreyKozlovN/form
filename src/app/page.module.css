@@ -1,0 +1,10 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  padding: 200px 0;
+  background-color: #1f5a78;
+
+  width: 100vw;
+  height: 100vh;
+}

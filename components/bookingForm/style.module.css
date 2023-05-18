@@ -1,0 +1,84 @@
+.wrapper {
+  height: 90px;
+
+  display: grid;
+
+  grid-template-areas: "campus dates guests button";
+  grid-template-columns: 160px 175px 130px 200px;
+
+  background: rgba(217, 217, 217, 0.55);
+  border: 1px solid #ffffff;
+  backdrop-filter: blur(10px);
+
+  border-radius: 10px;
+}
+
+.wrapper > div:not(:last-child) {
+  border-right: 1px solid #fff;
+}
+
+.subtitle {
+  font-style: normal;
+  font-weight: 100;
+  font-size: 14px;
+  line-height: 10px;
+  color: #171717;
+
+  text-transform: uppercase;
+}
+
+.title {
+  font-style: normal;
+  font-weight: 550;
+  font-size: 18px;
+  line-height: 18px;
+  color: #171717;
+}
+
+.title + .title {
+  margin-top: 5px;
+}
+
+.campus,
+.dates,
+.guests {
+  padding: 10px 15px;
+}
+
+.campus {
+  grid-area: campus;
+}
+
+.dates {
+  grid-area: dates;
+}
+
+.guests {
+  grid-area: guests;
+}
+
+.button {
+  grid-area: button;
+  padding: 35px;
+
+  font-style: normal;
+  font-weight: 550;
+  font-size: 18px;
+  line-height: 18px;
+
+  border: none;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+
+  color: #ffffff;
+  background: rgba(200, 170, 109, 0.7);
+  cursor: pointer;
+}
+
+.titleWrapper {
+  display: flex;
+  justify-content: space-between;
+
+  cursor: pointer;
+  align-items: baseline;
+}
