@@ -1,10 +1,13 @@
 .wrapper {
   height: 90px;
+  width: 670px;
 
   display: grid;
+  position: absolute;
+  top: 60vh;
 
   grid-template-areas: "campus dates guests button";
-  grid-template-columns: 160px 175px 130px 200px;
+  grid-template-columns: 160px 175px 130px auto;
 
   background: rgba(217, 217, 217, 0.55);
   border: 1px solid #ffffff;
@@ -59,7 +62,7 @@
 
 .button {
   grid-area: button;
-  padding: 35px;
+  padding: 30px;
 
   font-style: normal;
   font-weight: 550;

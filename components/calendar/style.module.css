@@ -1,0 +1,135 @@
+.wrapper {
+  width: 770px;
+  height: 420px;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 25px;
+
+  display: grid;
+  grid-template-areas:
+    "prevArrow firstMonth secondMonth nextArrow"
+    "description description description description";
+
+  position: relative;
+  top: 20px;
+
+  box-sizing: border-box;
+}
+
+.prevArrow {
+  grid-area: prevArrow;
+}
+.nextArrow {
+  grid-area: nextArrow;
+}
+
+.firstMonth {
+  grid-area: firstMonth;
+}
+
+.prevArrow,
+.nextArrow {
+  width: 22px;
+  cursor: pointer;
+}
+
+.firstMonth,
+.secondMonth {
+  width: 315px;
+  height: 295px;
+
+  text-align: center;
+}
+
+.firstMonth + .secondMonth {
+  margin-left: 45px;
+}
+
+.secondMonth {
+  grid-area: secondMonth;
+}
+
+.weekDayNames {
+  margin-top: 25px;
+  text-align: center;
+  align-items: center;
+  display: grid;
+  text-transform: uppercase;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.weekDayNames > div:nth-last-child(-n + 2) {
+  color: #db0000ed;
+}
+
+.weekDayNames > div {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 12px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.monthDays {
+  margin-top: 20px;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: 1fr;
+  text-align: center;
+  align-items: center;
+  display: grid;
+}
+
+.monthDays > div {
+  width: 45px;
+  height: 45px;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 20px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.monthDaysPrice {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 8px;
+  line-height: 10px;
+  text-align: center;
+  color: #171717;
+  text-transform: lowercase;
+}
+
+.description {
+  grid-area: description;
+
+  border-top: 1px solid #f4f4f4;
+  padding: 10px 0;
+}
+
+.descriptionSubtitle {
+  font-style: italic;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 12px;
+  color: #9a9a9a;
+}
+.descriptionTitle {
+  font-style: normal;
+  font-weight: 550;
+  font-size: 16px;
+  line-height: 16px;
+}
+
+.monthTitle {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 16px;
+  text-align: center;
+  text-transform: uppercase;
+
+  color: #101010;
+  margin: 3.5px 0;
+}
