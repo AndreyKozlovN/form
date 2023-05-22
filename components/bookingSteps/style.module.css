@@ -1,0 +1,14 @@
+.wrapper {
+  position: absolute;
+  width: 890px;
+  height: 640px;
+  background-color: #fff;
+  box-sizing: border-box;
+  padding: 25px 50px;
+}
+
+.stepLine {
+  width: 790px;
+  display: flex;
+  justify-content: space-between;
+}
