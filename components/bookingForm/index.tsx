@@ -7,60 +7,44 @@ import arrowIcon from "./arrow.svg";
 import { Calendar } from "../calendar";
 
 export const BookingForm = (): JSX.Element => {
-  const [showCalendar, setShowCalendar] = useState<boolean>(false);
+
+  const [campus, setCampus] = useState<string>("Корпус")
+  const [guestsInput, setGuestsInput] = useState<number>(2)
 
   return (
     <>
-      {showCalendar && <Calendar />}
-
       <section className={styles.wrapper}>
-        <div className={styles.campus}>
-          <p className={styles.subtitle}>Выберите</p>
 
-          <div className={styles.titleWrapper}>
-            <div className={styles.title}>Корпус</div>
-            <Image
-              width={12}
-              height={12}
-              className={styles.arrow}
-              src={arrowIcon}
-              alt=">"
-            />
+        <details className={styles.campus}>
+          <summary className={styles.titleWrapper}>
+            <p className={styles.subtitle}>{campus === "Корпус" ? "Выберите" : "Корпус"}</p>
+            <div className={styles.title}>{campus}</div>
+          </summary>
+
+          <div className={styles.selectCampusWrapper}>
+            <p className={styles.selectCampusItem} onClick={() => setCampus("Модерн 5*")}>Модерн 5*</p>
+            <p className={styles.selectCampusItem} onClick={() => setCampus("Классик 4*")}>Классик 4*</p>
           </div>
-        </div>
+        </details>
 
-        <div className={styles.dates}>
-          <p className={styles.subtitle}>Выберите даты</p>
+        <details className={styles.dates}>
+          <summary className={styles.titleWrapper}>
+            <p className={styles.subtitle}>Выберите даты</p>
+            <div>
+              <div className={styles.title}>20.03.2023</div>
+            </div>
+          </summary>
+          <Calendar />
+        </details>
 
-          <div
-            className={styles.titleWrapper}
-            onClick={() => setShowCalendar(!showCalendar)}
-          >
-            <div className={styles.title}>20.03.2023</div>
-            <Image
-              width={12}
-              height={12}
-              className={styles.arrow}
-              src={arrowIcon}
-              alt=">"
-            />
-          </div>
-        </div>
+        <details className={styles.guests}>
 
-        <div className={styles.guests}>
-          <p className={styles.subtitle}>Гости</p>
 
-          <div className={styles.titleWrapper}>
-            <div className={styles.title}>2 гостя</div>
-            <Image
-              width={12}
-              height={12}
-              className={styles.arrow}
-              src={arrowIcon}
-              alt=">"
-            />
-          </div>
-        </div>
+          <summary className={styles.titleWrapper}>
+            <p className={styles.subtitle}>Гости</p>
+            <input className={styles.title} type="number" value={guestsInput} onChange={(e) => setGuestsInput(e.target.valueAsNumber)} defaultValue={2} />
+          </summary>
+        </details>
 
         <button className={styles.button}>Забронировать</button>
       </section>

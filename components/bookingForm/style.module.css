@@ -16,7 +16,7 @@
   border-radius: 10px;
 }
 
-.wrapper > div:not(:last-child) {
+.wrapper > details:not(:last-child) {
   border-right: 1px solid #fff;
 }
 
@@ -28,13 +28,14 @@
   color: #171717;
 
   text-transform: uppercase;
+  cursor: initial;
 }
 
 .title {
   font-style: normal;
   font-weight: 550;
   font-size: 18px;
-  line-height: 18px;
+  line-height: 20px;
   color: #171717;
 }
 
@@ -80,8 +81,47 @@
 
 .titleWrapper {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
 
   cursor: pointer;
   align-items: baseline;
+}
+
+.titleWrapper input {
+  max-width: -webkit-fill-available;
+  box-sizing: border-box;
+}
+
+.titleWrapper input[type="number"] {
+  background-color: transparent;
+  border: 1px solid #fff;
+  border-radius: 10px;
+  padding: 0 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.selectCampusWrapper {
+  position: absolute;
+
+  top: 95px;
+  left: 0px;
+}
+
+.selectCampusWrapper .selectCampusItem {
+  background: #fff;
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+
+  width: 160px;
+  box-sizing: border-box;
+  padding: 15px;
+  margin: 5px 0;
+  cursor: pointer;
+}
+
+.selectCampusWrapper .selectCampusItem:hover {
+  color: #fff;
+  background-color: rgba(200, 170, 109, 0.7);
 }

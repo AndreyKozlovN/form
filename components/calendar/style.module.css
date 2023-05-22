@@ -10,10 +10,10 @@
     "prevArrow firstMonth secondMonth nextArrow"
     "description description description description";
 
-  position: relative;
-  top: 20px;
-
+  position: absolute;
   box-sizing: border-box;
+  bottom: 100px;
+  left: -50px;
 }
 
 .prevArrow {
