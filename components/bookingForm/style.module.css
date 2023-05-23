@@ -16,7 +16,7 @@
   border-radius: 10px;
 }
 
-.wrapper > details:not(:last-child) {
+.wrapper > div:not(:last-child) {
   border-right: 1px solid #fff;
 }
 
@@ -81,7 +81,6 @@
 
 .titleWrapper {
   display: flex;
-  flex-direction: column;
   justify-content: space-between;
 
   cursor: pointer;

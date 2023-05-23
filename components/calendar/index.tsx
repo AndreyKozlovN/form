@@ -1,6 +1,6 @@
 import Image from "next/image";
 import styles from "./style.module.css";
-import prevArrow from "./prevArrow.svg";
+import prevArrow from "/prevArrow.svg";
 import nextArrow from "./nextArrow.svg";
 
 export const Calendar = (): JSX.Element => {

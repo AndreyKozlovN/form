@@ -4,11 +4,160 @@
   height: 640px;
   background-color: #fff;
   box-sizing: border-box;
-  padding: 25px 50px;
+  padding: 35px 50px;
+  border-radius: 50px;
+  top: 5px;
+}
+
+.content {
+  padding: 10px;
 }
 
 .stepLine {
   width: 790px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+}
+
+.stepLine > span {
+  width: 30px;
+  height: 30px;
+  border-radius: 25px;
+  color: #fff;
+  background-color: #cecece;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.stepLine > span > tr {
+  height: 10px;
+  width: 180px;
+
+  background-color: #cecece;
+
+  position: relative;
+  z-index: 1;
+  right: 95px;
+  top: 8.5px;
+}
+
+.stepLine .active {
+  background-color: #c8aa6d;
+  z-index: 2;
+}
+
+.stepLine .currentStep {
+  background-color: #c8aa6d;
+  z-index: 2;
+  transform: scale(1.25);
+}
+
+.stepTitle {
+  padding: 10px;
+  margin-top: 25px;
+  color: #828282;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 25px;
+  line-height: 30px;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.stepTitle > span {
+  color: #000;
+}
+
+.campuses {
+  display: grid;
+  grid-template-columns: 320px 320px auto;
+  gap: 50px 15px;
+  height: 350px;
+  border-bottom: 1px solid #9a9a9a;
+}
+
+.cardWrapper {
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  border-radius: 20px;
+  width: 320px;
+  height: 250px;
+  cursor: pointer;
+}
+
+.cardTitle {
+  position: relative;
+  bottom: 60px;
+  left: 30px;
+  color: #fff;
+  text-transform: uppercase;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 16px;
+}
+
+.campusImage {
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.descriptionWrapper {
+  width: 65%;
+}
+
+.descriptionTitle {
+  font-style: normal;
+  font-weight: 550;
+  font-size: 16px;
+  line-height: 16px;
+
+  color: #101010;
+}
+
+.descriptionText {
+  font-style: italic;
+  font-weight: 300;
+  font-size: 13px;
+  line-height: 13px;
+
+  color: #9a9a9a;
+}
+
+.buttonsWrapper {
+  width: 33%;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.button {
+  height: 60px;
+  border-radius: 50px;
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.buttonPrev {
+  width: 60px;
+  border: 3px solid #cecece;
+  justify-content: center;
+  background-color: transparent;
+}
+
+.buttonNext {
+  width: 180px;
+  background: #cecece;
+  border: none;
+  color: #fff;
+  justify-content: space-evenly;
 }
