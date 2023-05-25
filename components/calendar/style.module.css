@@ -1,19 +1,8 @@
 .wrapper {
-  width: 770px;
-  height: 420px;
-  background: #ffffff;
-  border-radius: 10px;
-  padding: 25px;
-
   display: grid;
   grid-template-areas:
     "prevArrow firstMonth secondMonth nextArrow"
     "description description description description";
-
-  position: absolute;
-  box-sizing: border-box;
-  bottom: 100px;
-  left: -50px;
 }
 
 .prevArrow {

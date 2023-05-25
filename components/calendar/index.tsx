@@ -1,7 +1,5 @@
 import Image from "next/image";
 import styles from "./style.module.css";
-import prevArrow from "/prevArrow.svg";
-import nextArrow from "./nextArrow.svg";
 
 export const Calendar = (): JSX.Element => {
   return (
@@ -10,7 +8,7 @@ export const Calendar = (): JSX.Element => {
         className={styles.prevArrow}
         width={12}
         height={22}
-        src={prevArrow}
+        src={"/icons/prevArrow.svg"}
         alt={"Назад"}
       />
 
@@ -232,11 +230,11 @@ export const Calendar = (): JSX.Element => {
 
       <div className={styles.description}>
         <p className={styles.descriptionTitle}>
-          Заезд 10 апреля - Выезд 14 апреля. Итого 4 ночи.
+          {/* Заезд 10 апреля - Выезд 14 апреля. Итого 4 ночи. */}
         </p>
         <p className={styles.descriptionSubtitle}>
-          Лучшие цены для 1 гостя за ночь. Цена может быть доступна при
-          соблюдении специальных условий бронирования.
+          {/* Лучшие цены для 1 гостя за ночь. Цена может быть доступна при
+          соблюдении специальных условий бронирования. */}
         </p>
       </div>
 
@@ -244,7 +242,7 @@ export const Calendar = (): JSX.Element => {
         className={styles.nextArrow}
         width={12}
         height={22}
-        src={nextArrow}
+        src={"/icons/nextArrow.svg"}
         alt={"Вперёд"}
       />
     </div>

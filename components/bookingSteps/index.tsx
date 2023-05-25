@@ -3,24 +3,36 @@ import { useState } from "react";
 
 import styles from "./style.module.css";
 import cn from "classnames";
+import { Calendar } from "../calendar";
 
 interface CardProps {
   image: string;
   name: string;
-  campusKey: number;
-  activeCard?: boolean;
-  setCampusKey: (campusKey: number) => void;
+  title: string;
+  description: string;
+  setDescriptionTitle: any;
+  setDescriptionText: any;
+}
+
+interface SelectComponent {
+  step: number;
+  campusesArray?: any;
+  setDescriptionTitle: (description: string) => void;
+  setDescriptionText: (text: string) => void;
 }
 
 
-const Card = ({ image = '', name = 'Название корпуса', campusKey = 0, setCampusKey, activeCard }: CardProps) => {
+const Card = ({ image = '', name = 'Название корпуса', title, description, setDescriptionTitle, setDescriptionText }: CardProps) => {
 
   return (
     <div
       className={cn(styles.cardWrapper, {
-        [styles.activeCard]: activeCard
+        [styles.activeCard]: false
       })}
-      onClick={() => setCampusKey(campusKey)}>
+      onClick={() => {
+        setDescriptionTitle(title)
+        setDescriptionText(description)
+      }}>
       <Image src={image} alt={"фото корпуса"} fill className={styles.campusImage} />
       <p className={styles.cardTitle}>{name}</p>
     </div>
@@ -58,6 +70,27 @@ const Steps = ({ step = 1 }) => {
   )
 }
 
+const SelectComponent = (
+  { step = 1,
+    campusesArray,
+    setDescriptionText,
+    setDescriptionTitle }: SelectComponent): JSX.Element => {
+  switch (step) {
+    case 1: return <>{campusesArray && campusesArray.map((campus: any, index: number) => (
+      <Card
+        key={campus.id}
+        image={campus.image}
+        name={campus.name}
+        title={campus.title}
+        description={campus.description}
+        setDescriptionText={setDescriptionText}
+        setDescriptionTitle={setDescriptionTitle} />
+    ))}</>
+    case 2: return <Calendar />
+    default: return <></>
+  }
+}
+
 export const BookingSteps = (): JSX.Element => {
 
   const campusesArray = [
@@ -78,44 +111,44 @@ export const BookingSteps = (): JSX.Element => {
   ]
 
   const [step, setStep] = useState<number>(1);
-  const [campusKey, setCampusKey] = useState<number>(-1);
+  const [descriptionTitle, setDescriptionTitle] = useState<string>('');
+  const [descriptionText, setDescriptionText] = useState<string>('');
 
   return (
     <div className={styles.wrapper}>
       <Steps step={step} />
 
       <div className={styles.content}>
-        <div className={styles.campuses}>
-          {
-            campusesArray.map((campus, index) => (
-              <Card
-                key={campus.id}
-                image={campus.image}
-                name={campus.name}
-                campusKey={index}
-                setCampusKey={setCampusKey}
-                activeCard={index === campusKey ? true : false} />
-            ))
-          }
+        <div className={styles.stepContent}>
+
+          <SelectComponent
+            setDescriptionTitle={setDescriptionTitle}
+            setDescriptionText={setDescriptionText}
+            step={step}
+            campusesArray={campusesArray} />
+
         </div>
 
         <div className={styles.footer}>
 
           <div className={styles.descriptionWrapper}>
-            {
-              campusKey >= 0 &&
-              <>
-                <h3 className={styles.descriptionTitle}>{campusesArray[campusKey].title}</h3>
-                <p className={styles.descriptionText}>{campusesArray[campusKey].description}</p>
-              </>
-            }
+            <h3 className={styles.descriptionTitle}>{descriptionTitle}</h3>
+            <p className={styles.descriptionText}>{descriptionText}</p>
           </div>
 
           <div className={styles.buttonsWrapper}>
-            <button onClick={() => setStep(step > 1 ? step - 1 : step)} className={cn(styles.button, styles.buttonPrev)}>
+            <button onClick={() => {
+              setStep(step > 1 ? step - 1 : step)
+              setDescriptionTitle(step <= 5 && step >= 2 ? " " : descriptionTitle)
+              setDescriptionText(step <= 5 && step >= 2 ? " " : descriptionText)
+            }} className={cn(styles.button, styles.buttonPrev)}>
               <Image src={"/icons/buttonArrowPrev.svg"} alt={"<"} width={20} height={20} />
             </button>
-            <button onClick={() => setStep(step < 5 ? step + 1 : step)} className={cn(styles.button, styles.buttonNext)}>Далее <Image src={"/icons/buttonArrowNext.svg"} alt={'>'} width={50}
+            <button onClick={() => {
+              setStep(step < 5 ? step + 1 : step)
+              setDescriptionTitle(step < 5 && step >= 1 ? " " : descriptionTitle)
+              setDescriptionText(step < 5 && step >= 1 ? " " : descriptionText)
+            }} className={cn(styles.button, styles.buttonNext)}>Далее <Image src={"/icons/buttonArrowNext.svg"} alt={'>'} width={50}
               height={20} /></button>
           </div>
 
