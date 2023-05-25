@@ -5,33 +5,56 @@ import styles from "./style.module.css";
 import cn from "classnames";
 import { Calendar } from "../calendar";
 
+interface Campus {
+  image: string;
+  name: string;
+  title: string;
+  description: string;
+  id: string;
+}
+
 interface CardProps {
   image: string;
   name: string;
   title: string;
   description: string;
-  setDescriptionTitle: any;
-  setDescriptionText: any;
+  setDescriptionTitle: (description: string) => void;
+  setDescriptionText: (text: string) => void;
+  index?: number;
+  activeCardIndex: number;
+  setActiveCardIndex: (index: any) => void;
 }
 
 interface SelectComponent {
   step: number;
-  campusesArray?: any;
+  campusesArray: Campus[];
   setDescriptionTitle: (description: string) => void;
   setDescriptionText: (text: string) => void;
+  activeCardIndex: any;
+  setActiveCardIndex: (index: any) => void;
 }
 
 
-const Card = ({ image = '', name = 'Название корпуса', title, description, setDescriptionTitle, setDescriptionText }: CardProps) => {
+const Card = (
+  { image = '',
+    name = 'Название корпуса',
+    title,
+    description,
+    setDescriptionTitle,
+    setDescriptionText,
+    index,
+    activeCardIndex,
+    setActiveCardIndex }: CardProps) => {
 
   return (
     <div
       className={cn(styles.cardWrapper, {
-        [styles.activeCard]: false
+        [styles.activeCard]: index == activeCardIndex
       })}
       onClick={() => {
         setDescriptionTitle(title)
         setDescriptionText(description)
+        setActiveCardIndex(index)
       }}>
       <Image src={image} alt={"фото корпуса"} fill className={styles.campusImage} />
       <p className={styles.cardTitle}>{name}</p>
@@ -74,17 +97,23 @@ const SelectComponent = (
   { step = 1,
     campusesArray,
     setDescriptionText,
-    setDescriptionTitle }: SelectComponent): JSX.Element => {
+    setDescriptionTitle,
+    activeCardIndex,
+    setActiveCardIndex }: SelectComponent): JSX.Element => {
+
   switch (step) {
     case 1: return <>{campusesArray && campusesArray.map((campus: any, index: number) => (
       <Card
+        index={index}
         key={campus.id}
         image={campus.image}
         name={campus.name}
         title={campus.title}
         description={campus.description}
         setDescriptionText={setDescriptionText}
-        setDescriptionTitle={setDescriptionTitle} />
+        setDescriptionTitle={setDescriptionTitle}
+        activeCardIndex={activeCardIndex}
+        setActiveCardIndex={setActiveCardIndex} />
     ))}</>
     case 2: return <Calendar />
     default: return <></>
@@ -109,7 +138,7 @@ export const BookingSteps = (): JSX.Element => {
       id: '2s0sa8432j',
     }
   ]
-
+  const [activeCardIndex, setActiveCardIndex] = useState<number>(-1);
   const [step, setStep] = useState<number>(1);
   const [descriptionTitle, setDescriptionTitle] = useState<string>('');
   const [descriptionText, setDescriptionText] = useState<string>('');
@@ -122,6 +151,8 @@ export const BookingSteps = (): JSX.Element => {
         <div className={styles.stepContent}>
 
           <SelectComponent
+            activeCardIndex={activeCardIndex}
+            setActiveCardIndex={setActiveCardIndex}
             setDescriptionTitle={setDescriptionTitle}
             setDescriptionText={setDescriptionText}
             step={step}
@@ -141,6 +172,7 @@ export const BookingSteps = (): JSX.Element => {
               setStep(step > 1 ? step - 1 : step)
               setDescriptionTitle(step <= 5 && step >= 2 ? " " : descriptionTitle)
               setDescriptionText(step <= 5 && step >= 2 ? " " : descriptionText)
+              setActiveCardIndex(step <= 5 && step >= 2 ? -1 : activeCardIndex)
             }} className={cn(styles.button, styles.buttonPrev)}>
               <Image src={"/icons/buttonArrowPrev.svg"} alt={"<"} width={20} height={20} />
             </button>
@@ -148,6 +180,7 @@ export const BookingSteps = (): JSX.Element => {
               setStep(step < 5 ? step + 1 : step)
               setDescriptionTitle(step < 5 && step >= 1 ? " " : descriptionTitle)
               setDescriptionText(step < 5 && step >= 1 ? " " : descriptionText)
+              setActiveCardIndex(step < 5 && step >= 1 ? -1 : activeCardIndex)
             }} className={cn(styles.button, styles.buttonNext)}>Далее <Image src={"/icons/buttonArrowNext.svg"} alt={'>'} width={50}
               height={20} /></button>
           </div>
