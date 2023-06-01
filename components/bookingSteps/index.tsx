@@ -5,6 +5,7 @@ import styles from "./style.module.css";
 import cn from "classnames";
 import { Calendar } from "../calendar";
 import { Guests } from "../guests";
+import { PromoCode } from "../promoCode";
 
 interface Campus {
   image: string;
@@ -132,8 +133,8 @@ const SelectComponent = (
         setActiveCardIndex={setActiveCardIndex} />
     ))}</>
     case 2: return <Calendar />
-    case 3: return <Guests
-      setDescriptionTitle={setDescriptionTitle} />
+    case 3: return <Guests setDescriptionTitle={setDescriptionTitle} />
+    case 4: return <PromoCode setDescriptionTitle={setDescriptionTitle} />
     default: return <></>
   }
 }
