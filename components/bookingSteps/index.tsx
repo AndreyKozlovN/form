@@ -1,9 +1,10 @@
 import Image from "next/image";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import styles from "./style.module.css";
 import cn from "classnames";
 import { Calendar } from "../calendar";
+import { Guests } from "../guests";
 
 interface Campus {
   image: string;
@@ -63,6 +64,21 @@ const Card = (
 }
 
 const Steps = ({ step = 1 }) => {
+
+
+  const stepText = (step: number): JSX.Element => {
+    switch (step) {
+      case 1: return <>Выберите корпус отеля</>
+      case 2: return <>Выберите даты заезда и выезда и нажмите “Далее”</>
+      case 3: return <>Укажите количество гостей</>
+      case 4: return <>Укажите промокод (не обязательно)</>
+      case 5: return <>Инфо по шагу 5</>
+      default: return <>Выберите корпус отеля</>
+    }
+  }
+
+  const memoStepText = useMemo(() => stepText(step), [step])
+
   return (
     <div className={styles.stepsWrapper}>
       <div className={styles.stepLine}>
@@ -87,7 +103,7 @@ const Steps = ({ step = 1 }) => {
         })}>5</span>
       </div>
 
-      <h2 className={styles.stepTitle}><span>Шаг {step}</span> из 5 | Выберите корпус отеля</h2>
+      <h2 className={styles.stepTitle}><span>Шаг {step}</span> из 5 | {memoStepText} </h2>
 
     </div>
   )
@@ -116,6 +132,7 @@ const SelectComponent = (
         setActiveCardIndex={setActiveCardIndex} />
     ))}</>
     case 2: return <Calendar />
+    case 3: return <Guests />
     default: return <></>
   }
 }
