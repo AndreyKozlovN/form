@@ -132,7 +132,8 @@ const SelectComponent = (
         setActiveCardIndex={setActiveCardIndex} />
     ))}</>
     case 2: return <Calendar />
-    case 3: return <Guests />
+    case 3: return <Guests
+      setDescriptionTitle={setDescriptionTitle} />
     default: return <></>
   }
 }

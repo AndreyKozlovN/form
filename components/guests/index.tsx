@@ -1,15 +1,60 @@
-import React, { useState, Dispatch, SetStateAction } from 'react';
+import React, { useState, Dispatch, SetStateAction, useEffect } from 'react';
 import styles from "./style.module.css";
 import cn from "classnames";
 
-export const Guests = (): JSX.Element => {
+interface GuestsProps {
+  setDescriptionTitle: (description: string) => void;
+}
+
+interface GuestsCounterProps {
+  adults12Years: number,
+  kids11Years: number,
+  babies4Years: number
+}
+
+export const Guests = ({ setDescriptionTitle }: GuestsProps): JSX.Element => {
   const [adults12Years, setAdults12Years] = useState(2);
   const [kids11Years, setKids11Years] = useState(1);
   const [babies4Years, setBabies4Years] = useState(0);
 
+  function guestsCounter({ adults12Years, kids11Years, babies4Years }: GuestsCounterProps) {
+    const adults = adults12Years;
+    const kids = kids11Years + babies4Years;
+    const allGuests = adults + kids;
+
+    function stringFormatter(numberOfGuests: number): string {
+      let guestsString: string = '';
+
+      const lastTwoDigits: number = Math.abs(numberOfGuests % 100);
+      const lastDigit: number = Math.abs(numberOfGuests % 10);
+
+      if (lastTwoDigits >= 11 && lastTwoDigits <= 19) {
+        guestsString = 'гостей';
+      }
+      else if (lastDigit === 1) {
+        guestsString = 'гость';
+      }
+      else if (lastDigit >= 2 && lastDigit <= 4) {
+        guestsString = 'гостя';
+      }
+      else {
+        guestsString = 'гостей';
+      }
+
+      return `${guestsString}`;
+    }
+
+    return `${allGuests}  ${stringFormatter(allGuests)}: ${adults} - взрослых, ${kids} - детей.`
+  }
+
+  useEffect(() => {
+    setDescriptionTitle(guestsCounter({ adults12Years, kids11Years, babies4Years }))
+  }, [adults12Years, kids11Years, babies4Years, setDescriptionTitle])
+
+
 
   function decrementValue(setValue: Dispatch<SetStateAction<number>>): void {
-    setValue(prevValue => prevValue > 1 ? prevValue - 1 : 1);
+    setValue(prevValue => prevValue >= 1 ? prevValue - 1 : 0);
   }
 
   function incrementValue(setValue: Dispatch<SetStateAction<number>>): void {
@@ -53,7 +98,7 @@ export const Guests = (): JSX.Element => {
             <input
               className={styles.input}
               type="number"
-              min="1"
+              min="0"
               max="100"
               value={kids11Years}
               readOnly
@@ -71,7 +116,7 @@ export const Guests = (): JSX.Element => {
             <input
               className={styles.input}
               type="number"
-              min="1"
+              min="0"
               max="100"
               value={babies4Years}
               readOnly
