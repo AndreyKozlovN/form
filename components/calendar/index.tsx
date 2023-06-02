@@ -1,10 +1,80 @@
 import Image from "next/image";
 import styles from "./style.module.css";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+interface MontProps {
+  monthNumber?: number;
+  year?: number;
+}
+
+const WeekDays = () => {
+  return (
+    <div className={styles.weekDayNames}>
+      <div>ПН</div>
+      <div>ВТ</div>
+      <div>СР</div>
+      <div>ЧТ</div>
+      <div>ПТ</div>
+      <div>СБ</div>
+      <div>ВС</div>
+    </div>
+  )
+}
 
 export const Calendar = (): JSX.Element => {
+
+  const now = new Date();
+
+  const [currentMonth, setCurrentMonth] = useState<number>(now.getMonth() + 1) //текущий месяц по дефолту
+  const [currentYear, setCurrentYear] = useState<number>(now.getFullYear()) //текущий год по дефолту
+
+  const Month = ({ monthNumber = currentMonth, year = currentYear }: MontProps): JSX.Element => {
+
+    const monthNames = [
+      'Январь',
+      'Февраль',
+      'Март',
+      'Апрель',
+      'Май',
+      'Июнь',
+      'Июль',
+      'Август',
+      'Сентябрь',
+      'Октябрь',
+      'Ноябрь',
+      'Декабрь',
+    ];
+    const monthName = monthNames[monthNumber - 1]; // получение названия месяца по номеру
+    const daysInMonth = new Date(year, monthNumber, 0).getDate(); // получение количества дней в месяце
+    const monthDays = []; // массив для хранения элементов
+
+    // генерация элементов
+    for (let i = 1; i <= daysInMonth; i++) {
+      monthDays.push(
+        <div key={i}>
+          {i}
+          <p className={styles.monthDaysPrice}>от 5000₽</p>
+        </div>
+      );
+    }
+
+    return (
+      <>
+        <h3 className={styles.monthTitle}>{monthName} {year}</h3>
+        <WeekDays />
+        <div className={styles.monthDays}>
+          {monthDays}
+        </div>
+      </>
+    ); // возвращение списка элементов и названия месяца
+  }
+
+
   return (
     <div className={styles.wrapper}>
       <Image
+        onClick={() => setCurrentMonth(currentMonth - 1)}
         className={styles.prevArrow}
         width={12}
         height={22}
@@ -13,219 +83,11 @@ export const Calendar = (): JSX.Element => {
       />
 
       <div className={styles.firstMonth}>
-        <h3 className={styles.monthTitle}>Апрель 2023</h3>
-        <div className={styles.weekDayNames}>
-          <div>ПН</div>
-          <div>ВТ</div>
-          <div>СР</div>
-          <div>ЧТ</div>
-          <div>ПТ</div>
-          <div>СБ</div>
-          <div>ВС</div>
-        </div>
-        <div className={styles.monthDays}>
-          <div>
-            1<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            2<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            3<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            4<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            5<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            6<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            7<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            8<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            9<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            10<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            11<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            12<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            13<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            14<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            15<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            16<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            17<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            18<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            19<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            20<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            21<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            22<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            23<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            24<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            25<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            26<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            27<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            28<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            29<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            30<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            31<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-        </div>
+        <Month monthNumber={currentMonth} year={currentYear} />
       </div>
 
       <div className={styles.secondMonth}>
-        <h3 className={styles.monthTitle}>Май 2023</h3>
-        <div className={styles.weekDayNames}>
-          <div>ПН</div>
-          <div>ВТ</div>
-          <div>СР</div>
-          <div>ЧТ</div>
-          <div>ПТ</div>
-          <div>СБ</div>
-          <div>ВС</div>
-        </div>
-        <div className={styles.monthDays}>
-          <div>
-            1<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            2<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            3<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            4<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            5<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            6<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            7<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            8<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            9<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            10<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            11<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            12<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            13<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            14<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            15<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            16<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            17<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            18<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            19<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            20<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            21<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            22<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            23<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            24<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            25<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            26<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            27<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            28<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            29<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            30<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-          <div>
-            31<p className={styles.monthDaysPrice}>от 5000₽</p>
-          </div>
-        </div>
+        <Month monthNumber={currentMonth + 1} year={currentYear} />
       </div>
 
       <div className={styles.description}>
@@ -239,6 +101,7 @@ export const Calendar = (): JSX.Element => {
       </div>
 
       <Image
+        onClick={() => setCurrentMonth(currentMonth + 1)}
         className={styles.nextArrow}
         width={12}
         height={22}

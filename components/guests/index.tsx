@@ -1,23 +1,23 @@
-import React, { useState, Dispatch, SetStateAction, useEffect } from 'react';
+import React, { useState, Dispatch, SetStateAction, useEffect, useContext } from 'react';
 import styles from "./style.module.css";
 import cn from "classnames";
-
-interface GuestsProps {
-  setDescriptionTitle: (description: string) => void;
-}
+import { BookingContext } from "../../context/booking.context";
 
 interface GuestsCounterProps {
   adults12Years: number,
   kids11Years: number,
   babies4Years: number
+  shortPreview?: boolean;
 }
 
-export const Guests = ({ setDescriptionTitle }: GuestsProps): JSX.Element => {
+export const Guests = (): JSX.Element => {
+  const { setDescriptionTitle, setGuestsString } = useContext(BookingContext)
+
   const [adults12Years, setAdults12Years] = useState(2);
   const [kids11Years, setKids11Years] = useState(1);
   const [babies4Years, setBabies4Years] = useState(0);
 
-  function guestsCounter({ adults12Years, kids11Years, babies4Years }: GuestsCounterProps) {
+  function guestsCounter({ adults12Years, kids11Years, babies4Years, shortPreview = false }: GuestsCounterProps) {
     const adults = adults12Years;
     const kids = kids11Years + babies4Years;
     const allGuests = adults + kids;
@@ -44,12 +44,17 @@ export const Guests = ({ setDescriptionTitle }: GuestsProps): JSX.Element => {
       return `${guestsString}`;
     }
 
-    return `${allGuests}  ${stringFormatter(allGuests)}: ${adults} - взрослых, ${kids} - детей.`
+    if (!shortPreview) {
+      return `${allGuests}  ${stringFormatter(allGuests)}: ${adults} - взрослых, ${kids} - детей.`
+    } else {
+      return `${allGuests}  ${stringFormatter(allGuests)}`
+    }
   }
 
   useEffect(() => {
-    setDescriptionTitle(guestsCounter({ adults12Years, kids11Years, babies4Years }))
-  }, [adults12Years, kids11Years, babies4Years, setDescriptionTitle])
+    setDescriptionTitle && setDescriptionTitle(guestsCounter({ adults12Years, kids11Years, babies4Years }))
+    setGuestsString && setGuestsString(guestsCounter({ adults12Years, kids11Years, babies4Years, shortPreview: true }))
+  }, [adults12Years, kids11Years, babies4Years, setDescriptionTitle, setGuestsString])
 
 
 

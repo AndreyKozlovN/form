@@ -1,13 +1,14 @@
-"use client";
-import { useState } from "react";
-
+'use client'
+import { useState, useContext } from "react";
 import Image from "next/image";
 import styles from "./style.module.css";
 import { BookingSteps } from "../bookingSteps";
+import { BookingContext } from "../../context/booking.context";
 
 
 export const BookingForm = (): JSX.Element => {
   const [showSteps, setShowSteps] = useState<boolean>(false);
+  const { date, guestsString, campus } = useContext(BookingContext)
 
   return (
     <>
@@ -19,7 +20,7 @@ export const BookingForm = (): JSX.Element => {
           <p className={styles.subtitle}>Выберите</p>
 
           <div className={styles.titleWrapper} onClick={() => setShowSteps(!showSteps)}>
-            <div className={styles.title}>Корпус</div>
+            <div className={styles.title}>{campus}</div>
             <Image
               width={12}
               height={12}
@@ -34,7 +35,7 @@ export const BookingForm = (): JSX.Element => {
           <p className={styles.subtitle}>Выберите даты</p>
 
           <div className={styles.titleWrapper} onClick={() => setShowSteps(!showSteps)}>
-            <div className={styles.title}>20.03.2023</div>
+            <div className={styles.title}>{date}</div>
             <Image
               width={12}
               height={12}
@@ -49,7 +50,7 @@ export const BookingForm = (): JSX.Element => {
           <p className={styles.subtitle}>Гости</p>
 
           <div className={styles.titleWrapper}>
-            <div className={styles.title}>2 гостя</div>
+            <div className={styles.title}>{guestsString}</div>
             <Image
               width={12}
               height={12}
