@@ -29,8 +29,26 @@ export const Calendar = (): JSX.Element => {
   const [currentMonth, setCurrentMonth] = useState<number>(now.getMonth() + 1) //текущий месяц по дефолту
   const [currentYear, setCurrentYear] = useState<number>(now.getFullYear()) //текущий год по дефолту
 
-  const Month = ({ monthNumber = currentMonth, year = currentYear }: MontProps): JSX.Element => {
 
+  const handleMonthChange = (newMonth: number) => {
+
+    // проверка на допустимые значения
+    if (newMonth > 12) { // текущий месяц декабрь - переходим на следующий год
+      setCurrentYear(currentYear + 1);
+      setCurrentMonth(1);
+    } else if (newMonth < 1) { // текущий месяц январь - переходим на предыдущий год
+      setCurrentYear(currentYear - 1);
+      setCurrentMonth(12);
+    } else {
+      setCurrentMonth(newMonth);
+    }
+  }
+
+  const Month = ({ monthNumber = currentMonth, year = currentYear }: MontProps): JSX.Element => {
+    if (monthNumber > 12) {
+      monthNumber = 1;
+      year += 1;
+    }
     const monthNames = [
       'Январь',
       'Февраль',
@@ -74,7 +92,7 @@ export const Calendar = (): JSX.Element => {
   return (
     <div className={styles.wrapper}>
       <Image
-        onClick={() => setCurrentMonth(currentMonth - 1)}
+        onClick={() => handleMonthChange(currentMonth - 1)}
         className={styles.prevArrow}
         width={12}
         height={22}
@@ -101,7 +119,7 @@ export const Calendar = (): JSX.Element => {
       </div>
 
       <Image
-        onClick={() => setCurrentMonth(currentMonth + 1)}
+        onClick={() => handleMonthChange(currentMonth + 1)}
         className={styles.nextArrow}
         width={12}
         height={22}
