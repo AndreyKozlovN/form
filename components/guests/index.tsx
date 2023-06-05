@@ -63,7 +63,7 @@ export const Guests = (): JSX.Element => {
   }
 
   function incrementValue(setValue: Dispatch<SetStateAction<number>>): void {
-    setValue(prevValue => prevValue + 1);
+    setValue(prevValue => prevValue != 5 ? prevValue + 1 : 5);
   }
 
   return (
@@ -84,7 +84,7 @@ export const Guests = (): JSX.Element => {
               className={styles.input}
               type="number"
               min="1"
-              max="100"
+              max="5"
               value={adults12Years}
               readOnly
               onChange={(e) => setAdults12Years(parseInt(e.target.value))} />
@@ -104,7 +104,7 @@ export const Guests = (): JSX.Element => {
               className={styles.input}
               type="number"
               min="0"
-              max="100"
+              max="1"
               value={kids11Years}
               readOnly
               onChange={(e) => setKids11Years(parseInt(e.target.value))} />
@@ -122,7 +122,7 @@ export const Guests = (): JSX.Element => {
               className={styles.input}
               type="number"
               min="0"
-              max="100"
+              max="1"
               value={babies4Years}
               readOnly
               onChange={(e) => setBabies4Years(parseInt(e.target.value))} />

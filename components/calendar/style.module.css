@@ -78,6 +78,7 @@
   line-height: 20px;
   text-align: center;
   text-transform: uppercase;
+  cursor: pointer;
 }
 
 .monthDaysPrice {

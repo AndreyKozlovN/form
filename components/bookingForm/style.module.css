@@ -4,7 +4,7 @@
 
   display: grid;
   position: absolute;
-  top: 800px;
+  top: 650px;
 
   grid-template-areas: "campus dates guests button";
   grid-template-columns: 210px 175px 140px auto;
