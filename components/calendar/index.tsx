@@ -29,9 +29,51 @@ export const Calendar = (): JSX.Element => {
   const [currentMonth, setCurrentMonth] = useState<number>(now.getMonth() + 1) //текущий месяц по дефолту
   const [currentYear, setCurrentYear] = useState<number>(now.getFullYear()) //текущий год по дефолту
 
+  const [periodFrom, setPeriodFrom] = useState<string>(generateCurrentMonthDate("first"));
+  const [periodTo, setPeriodTo] = useState<string>(generateCurrentMonthDate("last"));
+  const [calendarData, setCalendarData] = useState({});
+  console.log(calendarData)
+
+  function generateCurrentMonthDate(type: "first" | "last"): string { // функция для конвертации дат в формат ISO для API запроса
+    let day: number;
+
+    if (type === "first") {
+      day = 1;
+    } else {
+      const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 1);
+      lastDayOfMonth.setDate(lastDayOfMonth.getDate() - 1);
+      day = lastDayOfMonth.getDate();
+    }
+
+    const date = new Date(currentYear, currentMonth, day);
+
+    function convert(str: any) {
+      var date = new Date(str),
+        mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+        day = ("0" + date.getDate()).slice(-2);
+      return [date.getFullYear(), mnth, day].join("-");
+    }
+
+    return convert(date);
+  }
+
+  useEffect(() => {
+    async function fetchCalendarData(from: string, to: string) {
+      try {
+        const response = await axios.get(
+          `https://cors-anywhere.herokuapp.com/https://backend.upro.group/api/v1/uprodev/001/available-rooms/calendar?periodFrom=${from}&periodTo=${to}`,
+          // для избежания CORS Ошибок - добавляем префикс https://cors-anywhere.herokuapp.com к URL
+        );
+        setCalendarData(response.data);
+      } catch (error) {
+        console.error(`Ошибка = ${error}`);
+      }
+    }
+
+    fetchCalendarData(periodFrom, periodTo);
+  }, []);
 
   const handleMonthChange = (newMonth: number) => {
-
     // проверка на допустимые значения
     if (newMonth > 12) { // текущий месяц декабрь - переходим на следующий год
       setCurrentYear(currentYear + 1);
@@ -67,7 +109,7 @@ export const Calendar = (): JSX.Element => {
     const daysInMonth = new Date(year, monthNumber, 0).getDate(); // получение количества дней в месяце
     const monthDays = []; // массив для хранения элементов
 
-    // генерация элементов
+    // генерация дней с ценой
     for (let i = 1; i <= daysInMonth; i++) {
       monthDays.push(
         <div key={i}>
