@@ -3,9 +3,22 @@ import styles from "./style.module.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+const fake = {
+  "items": {}
+}
+
 interface MontProps {
   monthNumber?: number;
   year?: number;
+}
+
+interface CalendarDataItems {
+  [date: string]: number;
+}
+
+interface CalendarDataProps {
+  items: CalendarDataItems;
+  code?: number;
 }
 
 const WeekDays = () => {
@@ -31,8 +44,7 @@ export const Calendar = (): JSX.Element => {
 
   const [periodFrom, setPeriodFrom] = useState<string>(generateCurrentMonthDate("first"));
   const [periodTo, setPeriodTo] = useState<string>(generateCurrentMonthDate("last"));
-  const [calendarData, setCalendarData] = useState({});
-  console.log(calendarData)
+  const [calendarData, setCalendarData] = useState<CalendarDataProps>(fake);
 
   function generateCurrentMonthDate(type: "first" | "last"): string { // функция для конвертации дат в формат ISO для API запроса
     let day: number;
@@ -57,6 +69,11 @@ export const Calendar = (): JSX.Element => {
     return convert(date);
   }
 
+  function changePeriod() {
+    setPeriodFrom(generateCurrentMonthDate("first"));
+    setPeriodTo(generateCurrentMonthDate("last"));
+  }
+
   useEffect(() => {
     async function fetchCalendarData(from: string, to: string) {
       try {
@@ -64,6 +81,7 @@ export const Calendar = (): JSX.Element => {
           `https://cors-anywhere.herokuapp.com/https://backend.upro.group/api/v1/uprodev/001/available-rooms/calendar?periodFrom=${from}&periodTo=${to}`,
           // для избежания CORS Ошибок - добавляем префикс https://cors-anywhere.herokuapp.com к URL
         );
+        console.log(response.data)
         setCalendarData(response.data);
       } catch (error) {
         console.error(`Ошибка = ${error}`);
@@ -71,7 +89,7 @@ export const Calendar = (): JSX.Element => {
     }
 
     fetchCalendarData(periodFrom, periodTo);
-  }, []);
+  }, [currentMonth]);
 
   const handleMonthChange = (newMonth: number) => {
     // проверка на допустимые значения
@@ -106,15 +124,15 @@ export const Calendar = (): JSX.Element => {
       'Декабрь',
     ];
     const monthName = monthNames[monthNumber - 1]; // получение названия месяца по номеру
-    const daysInMonth = new Date(year, monthNumber, 0).getDate(); // получение количества дней в месяце
     const monthDays = []; // массив для хранения элементов
 
-    // генерация дней с ценой
-    for (let i = 1; i <= daysInMonth; i++) {
+    for (let dayNumber = 1; dayNumber <= Object.keys(calendarData.items).length; dayNumber++) {
       monthDays.push(
-        <div key={i}>
-          {i}
-          <p className={styles.monthDaysPrice}>от 5000₽</p>
+        <div key={dayNumber}>
+          {dayNumber}
+          <p className={styles.monthDaysPrice}>
+            от {calendarData.items[Object.keys(calendarData.items)[dayNumber - 1]]}
+          </p>
         </div>
       );
     }
@@ -123,9 +141,15 @@ export const Calendar = (): JSX.Element => {
       <>
         <h3 className={styles.monthTitle}>{monthName} {year}</h3>
         <WeekDays />
-        <div className={styles.monthDays}>
-          {monthDays}
-        </div>
+        {
+          monthDays.length > 1 ? (
+            <div className={styles.monthDays}>
+              {monthDays}
+            </div>
+          ) : (
+            <span className={styles.spinner}><Image src="/icons/spinner.svg" alt="Loading..." width={64} height={64} /></span >
+          )
+        }
       </>
     ); // возвращение списка элементов и названия месяца
   }
@@ -134,7 +158,7 @@ export const Calendar = (): JSX.Element => {
   return (
     <div className={styles.wrapper}>
       <Image
-        onClick={() => handleMonthChange(currentMonth - 1)}
+        onClick={() => { handleMonthChange(currentMonth - 1); changePeriod() }}
         className={styles.prevArrow}
         width={12}
         height={22}
@@ -150,18 +174,18 @@ export const Calendar = (): JSX.Element => {
         <Month monthNumber={currentMonth + 1} year={currentYear} />
       </div>
 
-      <div className={styles.description}>
+      {/* <div className={styles.description}>
         <p className={styles.descriptionTitle}>
-          {/* Заезд 10 апреля - Выезд 14 апреля. Итого 4 ночи. */}
+          Заезд { } - Выезд { }. Итого: { }.
         </p>
         <p className={styles.descriptionSubtitle}>
-          {/* Лучшие цены для 1 гостя за ночь. Цена может быть доступна при
-          соблюдении специальных условий бронирования. */}
+          Лучшие цены для 1 гостя за ночь. Цена может быть доступна при
+          соблюдении специальных условий бронирования.
         </p>
-      </div>
+      </div> */}
 
       <Image
-        onClick={() => handleMonthChange(currentMonth + 1)}
+        onClick={() => { handleMonthChange(currentMonth + 1); changePeriod() }}
         className={styles.nextArrow}
         width={12}
         height={22}

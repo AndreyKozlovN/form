@@ -123,3 +123,11 @@
   color: #101010;
   margin: 3.5px 0;
 }
+
+.spinner {
+  width: 64px;
+  height: 64px;
+  /* margin: 0 auto; */
+  display: block;
+  margin: 75px auto;
+}
