@@ -1,52 +1,98 @@
 import Image from "next/image";
 import styles from "./style.module.css";
-import { useEffect, useState } from "react";
+import { WeekDays } from "./weekDays";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
+import { BookingContext } from "../../context/booking.context";
 
 const fake = {
-  "items": {}
+  "items": {
+    "2023-06-01": 6700,
+    "2023-06-02": 6700,
+    "2023-06-03": 6700,
+    "2023-06-04": 7900,
+    "2023-06-05": 7100,
+    "2023-06-06": 7100,
+    "2023-06-07": 7100,
+    "2023-06-08": 6900,
+    "2023-06-09": 6500,
+    "2023-06-10": 6500,
+    "2023-06-11": 6700,
+    "2023-06-12": 6900,
+    "2023-06-13": 7100,
+    "2023-06-14": 7100,
+    "2023-06-15": 6700,
+    "2023-06-16": 7100,
+    "2023-06-17": 6900,
+    "2023-06-18": 6900,
+    "2023-06-19": 6900,
+    "2023-06-20": 6900,
+    "2023-06-21": 6900,
+    "2023-06-22": 6700,
+    "2023-06-23": 6900,
+    "2023-06-24": 6900,
+    "2023-06-25": 6700,
+    "2023-06-26": 6700,
+    "2023-06-27": 6700,
+    "2023-06-28": 6700,
+    "2023-06-29": 6500,
+    "2023-06-30": 6500
+  }
 }
 
-interface MontProps {
-  monthNumber?: number;
-  year?: number;
-}
+function getNextMonthDates(start: string, end: string): [string, string] {
+  //Функци по преобразованию даты в дату следующего месяца для запроса
 
-interface CalendarDataItems {
-  [date: string]: number;
-}
+  const startDate = new Date(start);
+  const endDate = new Date(end);
 
-interface CalendarDataProps {
-  items: CalendarDataItems;
-  code?: number;
-}
+  // Проверяем, что конечная дата больше начальной
+  if (startDate > endDate) {
+    throw new Error(`End date must be greater than start date`);
+  }
 
-const WeekDays = () => {
-  return (
-    <div className={styles.weekDayNames}>
-      <div>ПН</div>
-      <div>ВТ</div>
-      <div>СР</div>
-      <div>ЧТ</div>
-      <div>ПТ</div>
-      <div>СБ</div>
-      <div>ВС</div>
-    </div>
-  )
+  const startYear = startDate.getFullYear();
+  const startMonth = startDate.getMonth() + 1;
+  const endYear = endDate.getFullYear();
+  const endMonth = endDate.getMonth() + 1;
+
+  let nextMonthYear = startYear;
+  let nextMonthMonth = startMonth + 1;
+
+  // Если следующий месяц это январь следующего года
+  if (nextMonthMonth > 12) {
+    nextMonthYear++;
+    nextMonthMonth = 1;
+  }
+
+  let daysInNextMonth = new Date(nextMonthYear, nextMonthMonth, 0).getDate();
+
+  // Если конечная дата находится в следующем месяце, устанавливаем количество дней в следующем месяце до конечного дня
+  if (startYear !== endYear || startMonth !== endMonth) {
+    daysInNextMonth = endDate.getDate();
+  }
+
+  const nextMonthStartDate = `${nextMonthYear}-${nextMonthMonth.toString().padStart(2, '0')}-01`;
+  const nextMonthEndDate = `${nextMonthYear}-${nextMonthMonth.toString().padStart(2, '0')}-${daysInNextMonth.toString().padStart(2, '0')}`;
+
+  return [nextMonthStartDate, nextMonthEndDate];
 }
 
 export const Calendar = (): JSX.Element => {
 
   const now = new Date();
-
+  const { setDescriptionTitle, setDescriptionText } = useContext(BookingContext)
   const [currentMonth, setCurrentMonth] = useState<number>(now.getMonth() + 1) //текущий месяц по дефолту
   const [currentYear, setCurrentYear] = useState<number>(now.getFullYear()) //текущий год по дефолту
 
   const [periodFrom, setPeriodFrom] = useState<string>(generateCurrentMonthDate("first"));
   const [periodTo, setPeriodTo] = useState<string>(generateCurrentMonthDate("last"));
-  const [calendarData, setCalendarData] = useState<CalendarDataProps>(fake);
 
-  function generateCurrentMonthDate(type: "first" | "last"): string { // функция для конвертации дат в формат ISO для API запроса
+  const [calendarData, setCalendarData] = useState<CalendarDataProps>(fake);
+  const [calendarDataNextMonth, setCalendarDataNextMonth] = useState<CalendarDataProps>(fake);
+
+  function generateCurrentMonthDate(type: "first" | "last"): string {
+    // функция для конвертации дат в формат ISO для API запроса
     let day: number;
 
     if (type === "first") {
@@ -75,24 +121,31 @@ export const Calendar = (): JSX.Element => {
   }
 
   useEffect(() => {
+    setDescriptionTitle && setDescriptionTitle(`Заезд ${''} - Выезд ${''}. Итого ${''}.`)
+    setDescriptionText && setDescriptionText('Лучшие цены для 1 гостя за ночь. Цена может быть доступна при соблюдении специальных условий бронирования')
+  })
+
+  useEffect(() => {
     async function fetchCalendarData(from: string, to: string) {
       try {
+        // для избежания CORS Ошибок - добавляем префикс https://cors-anywhere.herokuapp.com к URL
         const response = await axios.get(
-          `https://cors-anywhere.herokuapp.com/https://backend.upro.group/api/v1/uprodev/001/available-rooms/calendar?periodFrom=${from}&periodTo=${to}`,
-          // для избежания CORS Ошибок - добавляем префикс https://cors-anywhere.herokuapp.com к URL
+          `https://backend.upro.group/api/v1/uprodev/001/available-rooms/calendar?periodFrom=${from}&periodTo=${to}`,
         );
-        console.log(response.data)
+        const responseNextMonth = await axios.get(
+          `https://backend.upro.group/api/v1/uprodev/001/available-rooms/calendar?periodFrom=${getNextMonthDates(from, to)[0]}&periodTo=${getNextMonthDates(from, to)[1]}`,
+        );
         setCalendarData(response.data);
+        setCalendarDataNextMonth(responseNextMonth.data)
       } catch (error) {
         console.error(`Ошибка = ${error}`);
       }
     }
 
     fetchCalendarData(periodFrom, periodTo);
-  }, [currentMonth]);
+  }, [currentMonth, periodFrom, periodTo]);
 
   const handleMonthChange = (newMonth: number) => {
-    // проверка на допустимые значения
     if (newMonth > 12) { // текущий месяц декабрь - переходим на следующий год
       setCurrentYear(currentYear + 1);
       setCurrentMonth(1);
@@ -104,7 +157,7 @@ export const Calendar = (): JSX.Element => {
     }
   }
 
-  const Month = ({ monthNumber = currentMonth, year = currentYear }: MontProps): JSX.Element => {
+  const Month = ({ monthNumber = currentMonth, year = currentYear, nextMonth = false }: MontProps): JSX.Element => {
     if (monthNumber > 12) {
       monthNumber = 1;
       year += 1;
@@ -124,14 +177,15 @@ export const Calendar = (): JSX.Element => {
       'Декабрь',
     ];
     const monthName = monthNames[monthNumber - 1]; // получение названия месяца по номеру
-    const monthDays = []; // массив для хранения элементов
+    const monthDays = [];
 
-    for (let dayNumber = 1; dayNumber <= Object.keys(calendarData.items).length; dayNumber++) {
+    const data = nextMonth ? calendarDataNextMonth : calendarData;
+    for (let dayNumber = 1; dayNumber <= Object.keys(data.items).length; dayNumber++) {
       monthDays.push(
         <div key={dayNumber}>
           {dayNumber}
           <p className={styles.monthDaysPrice}>
-            от {calendarData.items[Object.keys(calendarData.items)[dayNumber - 1]]}
+            от {data.items[Object.keys(data.items)[dayNumber - 1]]} ₽
           </p>
         </div>
       );
@@ -151,9 +205,8 @@ export const Calendar = (): JSX.Element => {
           )
         }
       </>
-    ); // возвращение списка элементов и названия месяца
+    );
   }
-
 
   return (
     <div className={styles.wrapper}>
@@ -171,18 +224,8 @@ export const Calendar = (): JSX.Element => {
       </div>
 
       <div className={styles.secondMonth}>
-        <Month monthNumber={currentMonth + 1} year={currentYear} />
+        <Month monthNumber={currentMonth + 1} year={currentYear} nextMonth />
       </div>
-
-      {/* <div className={styles.description}>
-        <p className={styles.descriptionTitle}>
-          Заезд { } - Выезд { }. Итого: { }.
-        </p>
-        <p className={styles.descriptionSubtitle}>
-          Лучшие цены для 1 гостя за ночь. Цена может быть доступна при
-          соблюдении специальных условий бронирования.
-        </p>
-      </div> */}
 
       <Image
         onClick={() => { handleMonthChange(currentMonth + 1); changePeriod() }}

@@ -1,8 +1,10 @@
 .wrapper {
   display: grid;
-  grid-template-areas:
-    "prevArrow firstMonth secondMonth nextArrow"
-    "description description description description";
+  gap: 0 5px;
+  grid-template-areas: "prevArrow firstMonth . secondMonth nextArrow";
+  justify-content: space-between;
+  justify-items: safe;
+  width: 770px;
 }
 
 .prevArrow {
@@ -24,14 +26,8 @@
 
 .firstMonth,
 .secondMonth {
-  width: 315px;
   height: 295px;
-
   text-align: center;
-}
-
-.firstMonth + .secondMonth {
-  margin-left: 45px;
 }
 
 .secondMonth {
@@ -64,6 +60,7 @@
   margin-top: 20px;
   grid-template-columns: repeat(7, 1fr);
   grid-template-rows: 1fr;
+  gap: 5px;
   text-align: center;
   align-items: center;
   display: grid;
@@ -79,37 +76,34 @@
   text-align: center;
   text-transform: uppercase;
   cursor: pointer;
+  transition: all 0.4s;
+  padding: 2px;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+
+.monthDays > div:hover {
+  background-color: #adadad;
+  color: #fff;
+  transition: all 0.4s;
+}
+
+.monthDays > div:hover > p {
+  color: #fff;
+}
+
+.monthDays > div:active {
+  background-color: #868686;
 }
 
 .monthDaysPrice {
   font-style: normal;
   font-weight: 400;
   font-size: 8px;
-  line-height: 10px;
+  line-height: 8px;
   text-align: center;
   color: #171717;
   text-transform: lowercase;
-}
-
-.description {
-  grid-area: description;
-
-  border-top: 1px solid #f4f4f4;
-  padding: 10px 0;
-}
-
-.descriptionSubtitle {
-  font-style: italic;
-  font-weight: 300;
-  font-size: 12px;
-  line-height: 12px;
-  color: #9a9a9a;
-}
-.descriptionTitle {
-  font-style: normal;
-  font-weight: 550;
-  font-size: 16px;
-  line-height: 16px;
 }
 
 .monthTitle {
