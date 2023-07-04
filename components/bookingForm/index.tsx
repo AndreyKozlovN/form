@@ -1,5 +1,5 @@
 'use client'
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import Image from "next/image";
 import styles from "./style.module.css";
 import { BookingSteps } from "../bookingSteps";
@@ -7,19 +7,20 @@ import { BookingContext } from "../../context/booking.context";
 
 
 export const BookingForm = (): JSX.Element => {
-  const [showSteps, setShowSteps] = useState<boolean>(false);
-  const { date, guestsString, campus } = useContext(BookingContext)
+  const { date, guestsString, campus, setShowSteps,
+    showSteps, } = useContext(BookingContext)
 
   return (
     <>
 
       {showSteps && <BookingSteps />}
 
-      <section className={styles.wrapper} >
+      <section className={styles.wrapper} onClick={() => setShowSteps && setShowSteps(!showSteps)}>
+
         <div className={styles.campus}>
           <p className={styles.subtitle}>Выберите</p>
 
-          <div className={styles.titleWrapper} onClick={() => setShowSteps(!showSteps)}>
+          <div className={styles.titleWrapper}>
             <div className={styles.title}>{campus}</div>
             <Image
               width={12}
@@ -34,7 +35,7 @@ export const BookingForm = (): JSX.Element => {
         <div className={styles.dates}>
           <p className={styles.subtitle}>Выберите даты</p>
 
-          <div className={styles.titleWrapper} onClick={() => setShowSteps(!showSteps)}>
+          <div className={styles.titleWrapper} >
             <div className={styles.title}>{date}</div>
             <Image
               width={12}
@@ -46,7 +47,7 @@ export const BookingForm = (): JSX.Element => {
           </div>
         </div>
 
-        <div className={styles.guests} onClick={() => setShowSteps(!showSteps)}>
+        <div className={styles.guests} >
           <p className={styles.subtitle}>Гости</p>
 
           <div className={styles.titleWrapper}>
@@ -61,7 +62,7 @@ export const BookingForm = (): JSX.Element => {
           </div>
         </div>
 
-        <button className={styles.button} onClick={() => setShowSteps(!showSteps)}>Забронировать</button>
+        <button className={styles.button} >Забронировать</button>
       </section>
     </>
   );

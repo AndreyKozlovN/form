@@ -25,18 +25,22 @@ export const Steps = ({ step = 1 }) => {
 				})}>1</span>
 
 				<span className={cn({
-					[styles.currentStep]: step >= 2
-				})}> 2</span>
+					[styles.active]: step >= 2,
+					[styles.currentStep]: step == 2
+				})}>2</span>
 
 				<span className={cn({
-					[styles.currentStep]: step >= 3
+					[styles.active]: step >= 3,
+					[styles.currentStep]: step == 3
 				})}>3</span>
 
 				<span className={cn({
-					[styles.currentStep]: step >= 4
+					[styles.active]: step >= 4,
+					[styles.currentStep]: step == 4
 				})}>4</span>
 
 				<span className={cn({
+					[styles.active]: step == 5,
 					[styles.currentStep]: step == 5
 				})}>5</span>
 			</div>

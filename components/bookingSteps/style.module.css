@@ -9,12 +9,19 @@
   top: 5px;
 }
 
+.exit {
+  position: relative;
+  z-index: 2;
+  left: 470px;
+  cursor: pointer;
+}
+
 .stepContent {
   display: grid;
   grid-template-columns: auto auto 1fr;
   gap: 50px 15px;
   height: 350px;
-  border-bottom: 1px solid #9a9a9a;
+  border-bottom: 1px solid #f4f4f4;
 }
 
 .content {
@@ -94,4 +101,21 @@
 
 .buttonNext:hover {
   background-color: #c8aa6d;
+}
+
+.buttonFirstStepPrev {
+  cursor: not-allowed;
+}
+
+.buttonFirstStepPrev:hover {
+  background-color: transparent;
+  border-color: #cecece;
+}
+
+.buttonFirstStepNext {
+  cursor: not-allowed;
+}
+
+.buttonFirstStepNext:hover {
+  background-color: #cecece;
 }

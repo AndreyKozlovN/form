@@ -4,23 +4,27 @@ import cn from "classnames";
 import { BookingContext } from "../../context/booking.context";
 
 interface GuestsCounterProps {
-  adults12Years: number,
-  kids11Years: number,
-  babies4Years: number
+  adults: number,
+  kids: number,
+  babies: number
   shortPreview?: boolean;
 }
 
 export const Guests = (): JSX.Element => {
-  const { setDescriptionTitle, setGuestsString } = useContext(BookingContext)
+  const {
+    setDescriptionTitle,
+    setDescriptionText,
+    setGuestsString,
+    adults = 2,
+    setAdults,
+    kids = 0,
+    setKids,
+    babies = 0,
+    setBabies } = useContext(BookingContext)
 
-  const [adults12Years, setAdults12Years] = useState(2);
-  const [kids11Years, setKids11Years] = useState(1);
-  const [babies4Years, setBabies4Years] = useState(0);
-
-  function guestsCounter({ adults12Years, kids11Years, babies4Years, shortPreview = false }: GuestsCounterProps) {
-    const adults = adults12Years;
-    const kids = kids11Years + babies4Years;
-    const allGuests = adults + kids;
+  function guestsCounter({ adults, kids, babies, shortPreview = false }: GuestsCounterProps) {
+    const allKids = kids + babies;
+    const allGuests = adults + allKids;
 
     function stringFormatter(numberOfGuests: number): string {
       let guestsString: string = '';
@@ -45,25 +49,27 @@ export const Guests = (): JSX.Element => {
     }
 
     if (!shortPreview) {
-      return `${allGuests}  ${stringFormatter(allGuests)}: ${adults} - взрослых, ${kids} - детей.`
+      return `${allGuests}  ${stringFormatter(allGuests)}: ${adults} - взрослых, ${allKids} - детей.`
     } else {
       return `${allGuests}  ${stringFormatter(allGuests)}`
     }
   }
 
   useEffect(() => {
-    setDescriptionTitle && setDescriptionTitle(guestsCounter({ adults12Years, kids11Years, babies4Years }))
-    setGuestsString && setGuestsString(guestsCounter({ adults12Years, kids11Years, babies4Years, shortPreview: true }))
-  }, [adults12Years, kids11Years, babies4Years, setDescriptionTitle, setGuestsString])
+    setDescriptionTitle && setDescriptionTitle(guestsCounter({ adults, kids, babies }))
+    setDescriptionText && setDescriptionText(' ')
+
+    setGuestsString && setGuestsString(guestsCounter({ adults, kids, babies, shortPreview: true }))
+  }, [adults, kids, babies, setDescriptionTitle, setGuestsString, setDescriptionText])
 
 
 
-  function decrementValue(setValue: Dispatch<SetStateAction<number>>): void {
-    setValue(prevValue => prevValue >= 1 ? prevValue - 1 : 0);
+  function decrementValue(setValue: any): void {
+    setValue((prevValue: number) => prevValue >= 1 ? prevValue - 1 : 0);
   }
 
-  function incrementValue(setValue: Dispatch<SetStateAction<number>>): void {
-    setValue(prevValue => prevValue != 5 ? prevValue + 1 : 5);
+  function incrementValue(setValue: any): void {
+    setValue((prevValue: number) => prevValue != 5 ? prevValue + 1 : 5);
   }
 
   return (
@@ -79,18 +85,18 @@ export const Guests = (): JSX.Element => {
           <div className={styles.inputСontainer}>
             <button
               className={styles.button}
-              onClick={() => decrementValue(setAdults12Years)}>-</button>
+              onClick={() => decrementValue(setAdults && setAdults)}>-</button>
             <input
               className={styles.input}
               type="number"
               min="1"
               max="5"
-              value={adults12Years}
+              value={adults}
               readOnly
-              onChange={(e) => setAdults12Years(parseInt(e.target.value))} />
+              onChange={(e) => setAdults && setAdults(parseInt(e.target.value))} />
             <button
               className={styles.button}
-              onClick={() => incrementValue(setAdults12Years)}>+</button>
+              onClick={() => incrementValue(setAdults && setAdults)}>+</button>
           </div>
         </div>
 
@@ -99,16 +105,16 @@ export const Guests = (): JSX.Element => {
           <div className={cn(styles.inputСontainer, styles.inputСontainerKid)}>
             <button
               className={styles.button}
-              onClick={() => decrementValue(setKids11Years)}>-</button>
+              onClick={() => decrementValue(setKids)}>-</button>
             <input
               className={styles.input}
               type="number"
               min="0"
               max="1"
-              value={kids11Years}
+              value={kids}
               readOnly
-              onChange={(e) => setKids11Years(parseInt(e.target.value))} />
-            <button className={styles.button} onClick={() => incrementValue(setKids11Years)}>+</button>
+              onChange={(e) => setKids && setKids(parseInt(e.target.value))} />
+            <button className={styles.button} onClick={() => incrementValue(setKids)}>+</button>
           </div>
         </div>
 
@@ -117,18 +123,18 @@ export const Guests = (): JSX.Element => {
           <div className={cn(styles.inputСontainer, styles.inputСontainerKid)}>
             <button
               className={styles.button}
-              onClick={() => decrementValue(setBabies4Years)}>-</button>
+              onClick={() => decrementValue(setBabies)}>-</button>
             <input
               className={styles.input}
               type="number"
               min="0"
               max="1"
-              value={babies4Years}
+              value={babies}
               readOnly
-              onChange={(e) => setBabies4Years(parseInt(e.target.value))} />
+              onChange={(e) => setBabies && setBabies(parseInt(e.target.value))} />
             <button
               className={styles.button}
-              onClick={() => incrementValue(setBabies4Years)}>+</button>
+              onClick={() => incrementValue(setBabies)}>+</button>
           </div>
         </div>
 

@@ -1,14 +1,22 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import styles from "./style.module.css";
 import { BookingContext } from "../../context/booking.context";
 
 export const PromoCode = (): JSX.Element => {
-  const { setDescriptionTitle } = useContext(BookingContext)
-  const [inputValue, setInputValue] = useState("");
+  const { setDescriptionTitle, setDescriptionText, promocode, setPromocode } = useContext(BookingContext)
+  const [inputValue, setInputValue] = useState(promocode);
+
+
+  useEffect(() => {
+    setDescriptionTitle && setDescriptionTitle(`Промокод: ${promocode}`)
+    setDescriptionText && setDescriptionText(' ')
+  }, [promocode, setDescriptionText, setDescriptionTitle])
+
 
   const handleInputChange = (event: any) => {
     const newValue = event.target.value;
-    setDescriptionTitle && setDescriptionTitle(`Промокод: ${newValue.toUpperCase()}`)
+    setPromocode && setPromocode(`${newValue.toUpperCase()}`)
+    setDescriptionTitle && setDescriptionTitle(`Промокод: ${promocode}`)
     if (newValue.length <= 35) {
       setInputValue(newValue);
     }

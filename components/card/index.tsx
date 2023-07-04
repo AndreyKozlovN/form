@@ -9,9 +9,7 @@ interface CardProps {
 	name: string;
 	title: string;
 	description: string;
-	index?: number;
-	activeCardIndex: number;
-	setActiveCardIndex: (index: any) => void;
+	index: number;
 }
 
 export const Card = (
@@ -19,22 +17,25 @@ export const Card = (
 		name,
 		title,
 		description,
-		index,
-		activeCardIndex,
-		setActiveCardIndex }: CardProps) => {
+		index, }: CardProps) => {
 
-	const { setDescriptionText, setDescriptionTitle, setCampus } = useContext(BookingContext)
+	const {
+		setCampus,
+		setCampusDescription,
+		setCampusTitle,
+		activeCampusIndex,
+		setActiveCampusIndex } = useContext(BookingContext)
 
 	return (
 		<div
 			className={cn(styles.cardWrapper, {
-				[styles.activeCard]: index == activeCardIndex
+				[styles.activeCard]: index == activeCampusIndex
 			})}
 			onClick={() => {
-				setDescriptionTitle && setDescriptionTitle(title)
-				setDescriptionText && setDescriptionText(description)
+				setCampusDescription && setCampusDescription(description)
+				setCampusTitle && setCampusTitle(title)
 				setCampus && setCampus(name)
-				setActiveCardIndex(index)
+				setActiveCampusIndex && setActiveCampusIndex(index)
 			}}>
 			<Image src={image} alt={"фото корпуса"} fill className={styles.campusImage} />
 			<p className={styles.cardTitle}>{name}</p>
