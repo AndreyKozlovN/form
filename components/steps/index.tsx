@@ -24,20 +24,36 @@ export const Steps = ({ step = 1 }) => {
 					[styles.currentStep]: step == 1
 				})}>1</span>
 
+				<div className={cn(styles.baseline, {
+					[styles.activeLine]: step > 1
+				})} />
+
 				<span className={cn({
 					[styles.active]: step >= 2,
 					[styles.currentStep]: step == 2
 				})}>2</span>
+
+				<div className={cn(styles.baseline, styles.line2, {
+					[styles.activeLine]: step > 2
+				})} />
 
 				<span className={cn({
 					[styles.active]: step >= 3,
 					[styles.currentStep]: step == 3
 				})}>3</span>
 
+				<div className={cn(styles.baseline, styles.line3, {
+					[styles.activeLine]: step > 3
+				})} />
+
 				<span className={cn({
 					[styles.active]: step >= 4,
 					[styles.currentStep]: step == 4
 				})}>4</span>
+
+				<div className={cn(styles.baseline, styles.line4, {
+					[styles.activeLine]: step > 4
+				})} />
 
 				<span className={cn({
 					[styles.active]: step == 5,

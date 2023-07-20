@@ -1,4 +1,6 @@
-import { Calendar } from "../calendar"
+import { useState } from "react";
+// import { Calendar } from "../calendar"
+import { Calendar } from "../newCalendar/Calendar";
 import { Card } from "../card"
 import { Guests } from "../guests"
 import { PromoCode } from "../promoCode"
@@ -18,6 +20,8 @@ interface SelectComponent {
 
 export const SelectComponent = ({ step = 1, campusesArray }: SelectComponent): JSX.Element => {
 
+	const [selectedDate, setSelectedDay] = useState(new Date());
+
 	switch (step) {
 		case 1: return (
 			<>
@@ -34,7 +38,12 @@ export const SelectComponent = ({ step = 1, campusesArray }: SelectComponent): J
 				}
 			</>
 		)
-		case 2: return <Calendar />
+		case 2: return (
+			<>
+				<Calendar selectedDate={selectedDate}
+					selectDate={(date) => setSelectedDay(date)} />
+			</>
+		)
 		case 3: return <Guests />
 		case 4: return <PromoCode />
 		default: return <></>

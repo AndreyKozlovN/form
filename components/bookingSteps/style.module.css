@@ -6,21 +6,24 @@
   box-sizing: border-box;
   padding: 35px 50px;
   border-radius: 50px;
-  top: 5px;
+  top: 20px;
 }
 
 .exit {
   position: relative;
   z-index: 2;
-  left: 470px;
+  left: 455px;
+  bottom: 5px;
   cursor: pointer;
+  width: 45px;
+  height: 45px;
 }
 
 .stepContent {
   display: grid;
   grid-template-columns: auto auto 1fr;
   gap: 50px 15px;
-  height: 350px;
+  height: 355px;
   border-bottom: 1px solid #f4f4f4;
 }
 

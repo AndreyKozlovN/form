@@ -6,6 +6,7 @@
 }
 
 .stepLine > span {
+  z-index: 1;
   width: 30px;
   height: 30px;
   border-radius: 25px;
@@ -15,18 +16,6 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-}
-
-.stepLine > span > tr {
-  height: 10px;
-  width: 180px;
-
-  background-color: #cecece;
-
-  position: relative;
-  z-index: 1;
-  right: 95px;
-  top: 8.5px;
 }
 
 .stepLine .active {
@@ -48,11 +37,36 @@
   font-weight: 300;
   font-size: 24px;
   line-height: 30px;
-  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  /* text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); */
 }
 
 .stepTitle > span {
   color: #000;
   width: 72px;
   display: inline-block;
+}
+
+.baseline {
+  z-index: 0;
+  position: absolute;
+  height: 10px;
+  background-color: #cecece;
+  width: 200px;
+  left: 55px;
+}
+
+.activeLine {
+  background-color: #c8aa6d;
+}
+
+.line2 {
+  left: 240px;
+}
+
+.line3 {
+  left: 440px;
+}
+
+.line4 {
+  left: 640px;
 }

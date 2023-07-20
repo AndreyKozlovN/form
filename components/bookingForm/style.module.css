@@ -4,7 +4,7 @@
 
   display: grid;
   position: absolute;
-  top: 650px;
+  top: 665px;
 
   grid-template-areas: "campus dates guests button";
   grid-template-columns: 210px 175px 140px auto;
@@ -16,8 +16,36 @@
   border-radius: 10px;
 }
 
+.wrapper > div {
+  transition: all 0.4s;
+}
+
 .wrapper > div:not(:last-child) {
   border-right: 1px solid #fff;
+}
+
+.wrapper > div:not(:last-child):hover {
+  background: rgba(23, 23, 23, 0.8);
+  cursor: pointer;
+
+  transition: all 0.4s;
+}
+
+.wrapper > div:not(:last-child):hover p,
+.wrapper > div:not(:last-child):hover div {
+  color: #fff;
+
+  transition: all 0.4s;
+}
+
+.wrapper > div:first-child {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.wrapper > div:first-child:hover {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 
 .subtitle {
@@ -77,6 +105,15 @@
   color: #ffffff;
   background: rgba(200, 170, 109, 0.7);
   cursor: pointer;
+
+  transition: all 0.4s;
+}
+
+.button:hover {
+  background: rgba(23, 23, 23, 0.8);
+  color: #fff;
+
+  transition: all 0.4s;
 }
 
 .titleWrapper {

@@ -5,41 +5,6 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { BookingContext } from "../../context/booking.context";
 
-const fake = {
-  "items": {
-    // "2023-06-01": 6700,
-    // "2023-06-02": 6700,
-    // "2023-06-03": 6700,
-    // "2023-06-04": 7900,
-    // "2023-06-05": 7100,
-    // "2023-06-06": 7100,
-    // "2023-06-07": 7100,
-    // "2023-06-08": 6900,
-    // "2023-06-09": 6500,
-    // "2023-06-10": 6500,
-    // "2023-06-11": 6700,
-    // "2023-06-12": 6900,
-    // "2023-06-13": 7100,
-    // "2023-06-14": 7100,
-    // "2023-06-15": 6700,
-    // "2023-06-16": 7100,
-    // "2023-06-17": 6900,
-    // "2023-06-18": 6900,
-    // "2023-06-19": 6900,
-    // "2023-06-20": 6900,
-    // "2023-06-21": 6900,
-    // "2023-06-22": 6700,
-    // "2023-06-23": 6900,
-    // "2023-06-24": 6900,
-    // "2023-06-25": 6700,
-    // "2023-06-26": 6700,
-    // "2023-06-27": 6700,
-    // "2023-06-28": 6700,
-    // "2023-06-29": 6500,
-    // "2023-06-30": 6500
-  }
-}
-
 function getNextMonthDates(start: string, end: string): [string, string] {
   //Функци по преобразованию даты в дату следующего месяца для запроса
 
@@ -88,8 +53,9 @@ export const Calendar = (): JSX.Element => {
   const [periodFrom, setPeriodFrom] = useState<string>(generateCurrentMonthDate("first"));
   const [periodTo, setPeriodTo] = useState<string>(generateCurrentMonthDate("last"));
 
-  const [calendarData, setCalendarData] = useState<CalendarDataProps>(fake);
-  const [calendarDataNextMonth, setCalendarDataNextMonth] = useState<CalendarDataProps>(fake);
+  const [calendarData, setCalendarData] = useState<CalendarDataProps>({ "items": {} });
+  const [calendarDataNextMonth, setCalendarDataNextMonth] = useState<CalendarDataProps>({ "items": {} });
+
 
   function generateCurrentMonthDate(type: "first" | "last"): string {
     // функция для конвертации дат в формат ISO для API запроса
@@ -128,7 +94,6 @@ export const Calendar = (): JSX.Element => {
   useEffect(() => {
     async function fetchCalendarData(from: string, to: string) {
       try {
-        // для избежания CORS Ошибок - добавляем префикс https://cors-anywhere.herokuapp.com к URL
         const response = await axios.get(
           `https://backend.upro.group/api/v1/uprodev/001/available-rooms/calendar?periodFrom=${from}&periodTo=${to}`,
         );
@@ -177,19 +142,20 @@ export const Calendar = (): JSX.Element => {
       'Декабрь',
     ];
     const monthName = monthNames[monthNumber - 1]; // получение названия месяца по номеру
-    const monthDays = [];
-
     const data = nextMonth ? calendarDataNextMonth : calendarData;
-    for (let dayNumber = 1; dayNumber <= Object.keys(data.items).length; dayNumber++) {
-      monthDays.push(
+
+    const monthDays = Object.keys(data.items).map((key, index) => {
+      const dayNumber = index + 1;
+      return (
         <div key={dayNumber}>
           {dayNumber}
           <p className={styles.monthDaysPrice}>
-            от {data.items[Object.keys(data.items)[dayNumber - 1]]} ₽
+            от {data.items[key]} ₽
           </p>
         </div>
       );
-    }
+    });
+
 
     return (
       <>
@@ -228,7 +194,7 @@ export const Calendar = (): JSX.Element => {
       </div>
 
       <Image
-        onClick={() => { handleMonthChange(currentMonth + 1); changePeriod() }}
+        onClick={() => { handleMonthChange(currentMonth + 1); changePeriod(); }}
         className={styles.nextArrow}
         width={12}
         height={22}
