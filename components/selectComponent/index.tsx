@@ -4,6 +4,7 @@ import { Calendar } from "../newCalendar/Calendar";
 import { Card } from "../card"
 import { Guests } from "../guests"
 import { PromoCode } from "../promoCode"
+import Link from "next/link";
 
 interface Campus {
 	image: string;
@@ -46,6 +47,7 @@ export const SelectComponent = ({ step = 1, campusesArray }: SelectComponent): J
 		)
 		case 3: return <Guests />
 		case 4: return <PromoCode />
+		case 5: return <Link href={"/booking"}>Получить данные</Link>
 		default: return <></>
 	}
 }

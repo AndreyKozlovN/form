@@ -7,8 +7,31 @@ import { BookingContext } from "../../context/booking.context";
 
 
 export const BookingForm = (): JSX.Element => {
-  const { date, guestsString, campus, setShowSteps,
-    showSteps, } = useContext(BookingContext)
+  const { date,
+    guestsString,
+    campus,
+    setShowSteps,
+    showSteps,
+    arrivalDate,
+    departureDate, } = useContext(BookingContext);
+
+  const showBookingDate = (): JSX.Element => {
+    if (arrivalDate || departureDate) {
+      return (
+        <>
+          {arrivalDate}
+          <br />
+          {departureDate}
+        </>
+      )
+    } else {
+      return (
+        <>
+          {date}
+        </>
+      )
+    }
+  }
 
   return (
     <>
@@ -36,7 +59,9 @@ export const BookingForm = (): JSX.Element => {
           <p className={styles.subtitle}>Выберите даты</p>
 
           <div className={styles.titleWrapper} >
-            <div className={styles.title}>{date}</div>
+            <div className={styles.title}>
+              {showBookingDate()}
+            </div>
             <Image
               width={12}
               height={12}

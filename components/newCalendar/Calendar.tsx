@@ -25,7 +25,16 @@ export const Calendar: FC<CalendarProps> = ({
     // Получаем новый объект, представляющий следующий месяц
     const nextMonthDate = currentDate;
 
-    const { setDescriptionTitle, setDescriptionText } = useContext(BookingContext)
+    const {
+        setDescriptionTitle,
+        setDescriptionText,
+        arrivalDate,
+        setArrivalDate,
+        departureDate,
+        setDepartureDate
+    } = useContext(BookingContext)
+
+
 
     const { functions, state } = useCalendar({
         locale,
@@ -44,10 +53,31 @@ export const Calendar: FC<CalendarProps> = ({
         setDescriptionText && setDescriptionText('Лучшие цены для 1 гостя за ночь. Цена может быть доступна при соблюдении специальных условий бронирования')
     })
 
-    const selectPeriod = (day: any) => {
-        if (!day) return;
+    const selectPeriod = (day: any): string | null => {
+        if (!day) return null;
         const { year, monthNumber, dayNumber } = day
         return `${year}-${monthNumber < 10 ? '0' + monthNumber : monthNumber}-${dayNumber}`
+    }
+
+
+    const todayTimestamp = currentDate.getTime();
+
+    const selectBookingDates = (day: any) => {
+        console.log(day.timestamp, todayTimestamp)
+        if (arrivalDate === null) {
+            // @ts-ignore
+            setArrivalDate(selectPeriod(day))
+        }
+        if (arrivalDate) {
+            // @ts-ignore
+            setDepartureDate(selectPeriod(day))
+        }
+        if (selectPeriod(day) === arrivalDate) {
+            // @ts-ignore
+            setArrivalDate(null)
+            // @ts-ignore
+            setDepartureDate(null)
+        }
     }
 
     const periodFrom = useMemo(() => selectPeriod(state.calendarDays[0]), [state.calendarDays])
@@ -142,6 +172,7 @@ export const Calendar: FC<CalendarProps> = ({
                                                     day
                                                 );
                                                 selectDate(day.date);
+                                                selectBookingDates(day);
                                             }}
                                             className={[
                                                 s.calendarDay,
@@ -244,6 +275,7 @@ export const Calendar: FC<CalendarProps> = ({
                                                     day
                                                 );
                                                 selectDate(day.date);
+                                                selectBookingDates(day);
                                             }}
                                             className={[
                                                 s.calendarDay,

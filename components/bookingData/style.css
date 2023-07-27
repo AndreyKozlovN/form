@@ -1,0 +1,24 @@
+.main {
+  max-width: 1400px;
+  padding: 0px 100px 25px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.description {
+  text-align: left;
+  border-bottom: 2px solid black;
+}
+
+.calendar {
+  padding: 25px 25px 0px 25px;
+  display: flex;
+}
+
+.images {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 400px;
+  height: 150px;
+}

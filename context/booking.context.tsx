@@ -30,6 +30,12 @@ export interface BookingContextProps {
 	setCampusDescription?: (description: string) => void;
 	activeCampusIndex?: number,
 	setActiveCampusIndex?: (index: number) => void;
+
+	arrivalDate?: string | null;
+	setArrivalDate?: (date: string | null) => void;
+
+	departureDate?: string | null;
+	setDepartureDate?: (date: string | null) => void;
 }
 
 export const BookingContext = createContext<BookingContextProps>(
@@ -58,6 +64,9 @@ export const BookingContextProvider = (
 	const [campusTitleState, setCampusTitleState] = useState<string>('Выберите корпус');
 	const [campusDescriptionState, setCampusDescriptionState] = useState<string>('');
 	const [activeCampusIndexState, setActiveCampusIndexState] = useState<number>(-1);
+
+	const [arrivalDateState, setArrivalDateState] = useState<string | null>(null);
+	const [departureDateState, setDepartureDateState] = useState<string | null>(null)
 
 
 	const setCampusTitle = (title: string) => {
@@ -116,6 +125,14 @@ export const BookingContextProvider = (
 		setActiveCampusIndexState(index)
 	}
 
+	const setArrivalDate = (date: string | null) => {
+		setArrivalDateState(date);
+	}
+
+	const setDepartureDate = (date: string | null) => {
+		setDepartureDateState(date)
+	}
+
 	return (
 		<BookingContext.Provider
 			value={{
@@ -146,7 +163,11 @@ export const BookingContextProvider = (
 				campusDescription: campusDescriptionState,
 				setCampusDescription,
 				activeCampusIndex: activeCampusIndexState,
-				setActiveCampusIndex
+				setActiveCampusIndex,
+				arrivalDate: arrivalDateState,
+				setArrivalDate,
+				departureDate: departureDateState,
+				setDepartureDate,
 			}}>
 			{children}
 		</BookingContext.Provider>
